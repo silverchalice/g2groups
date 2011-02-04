@@ -1,0 +1,112 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Title      : Boorish
+Version    : 1.0
+Released   : 20080123
+Description: A wide two-column design suitable for blogs and small websites.
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<title>g2groups.net</title>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAXeAx6Va9xJMTHMkJ3KHQXBSJGSVjnGeLiZeTQg2BDNUcF0RZChSmXz2E5iewntNI2BPdrZTRDUeT7Q" type="text/javascript"></script>
+	<meta name="keywords" content="" />
+	<meta name="description" content="" />
+	<link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
+	<link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
+	<g:layoutHead />
+	<g:javascript library="application" />
+</head>
+<body onload="${pageProperty(name:'body.onload')}">
+<!-- start header -->
+<div id="header">
+<div id="logo">
+		<img class="logo" src="${createLinkTo(dir:'images',file:'grails_logo.png')}" />
+	</div>
+	<div id="menu">
+		<ul>
+			<li><span class="menuButton"><g:link controller="group" action="list">active<br/> groups</g:link></span></li>
+                        <li> <span class="menuButton"><g:link controller="proposal" action="list">proposed <br/>groups</g:link></span></li>
+                        <li> <span class="menuButton"><g:link class="create" controller="proposal" action="create">propose<br/>a  group</g:link></span></li>
+		</ul>
+	</div>
+</div>
+<!-- end header -->
+<!-- start page -->
+<div id="page">
+	<!-- start leftbar -->
+	
+	<!-- start content -->
+	<div id="content">
+		
+		<g:layoutBody />
+		
+	</div>
+	<!-- end content -->
+<!-- end page -->
+        <div id="sidebar">
+		<ul>
+                    <li id="search">
+                        <img class="headerImage" src="${createLinkTo(dir:'images',file:'search.png')}" />
+                        <g:form controller='group' action="search">
+                            <fieldset>
+                                    <input type="text" id="query" name="query" value="" /><input type="submit" id="x" value="Search" /><br/>
+                                    <g:if test="${session?.searchClass == 'Groups'}">
+                                        <g:radio name='searchClass' value='Groups' checked='true' /><strong>Active</strong> Groups <br/>
+                                        <g:radio name="searchClass" value="Proposals" /><strong>Proposed</strong> Groups
+                                    </g:if>
+                                    <g:else>
+                                        <g:radio name='searchClass' value='Groups' /><b>Active</b> Groups<br/>
+                                        <g:radio name="searchClass" value="Proposals" checked='true' /><b>Proposed</b> Groups
+                                    </g:else>
+                                        
+                                            
+                            </fieldset>
+                        </g:form>
+                        <img class="headerImage" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
+                    </li>
+
+                    <li>
+                        <img class="headerImage" src="${createLinkTo(dir:'images',file:'welcome.png')}" />
+                        <p>
+                          This site is dedicated to Groovy-related user groups. You can check out existing groups, propose one in your area, or show your support for a proposed group. 
+                        </p>
+                        <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
+                    </li>
+                    <li>
+	                    <h3>is your group listed here?</h3>
+                        <p>
+                          If your group is listed as <g:link controller="proposal" action="list">proposed</g:link> but is currently <strong>active</strong>, <g:link controller="group" action="p">give us the group information</g:link> so we can do something about it.
+                        </p>
+                        <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
+                    </li>
+                    <li>
+                        <a style="margin-left:50px" href="http://twitter.com/g2groups"><img class="headerImage" src="${createLinkTo(dir:'images',file:'GreenTwitterBird.png')}" /></a>
+                        <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
+                    </li>
+                    <li>
+                        <img class="headerImage" src="${createLinkTo(dir:'images',file:'beta.png')}" />
+                        <p>
+                          This site is currently in <b>beta</b>; we appreciate your feedback! If you have an idea or complaint, <a href="mailto:feedback.g2groups@gmail.com">please let us know!</a><br />
+                        </p>
+                    </li>
+		</ul>
+		<div style="clear: both;">&nbsp;</div>
+	</div>
+	<!-- end sidebar -->
+        <div id="footer">
+	         <p id="legal">&copy;2011 <a href="http://silver-chalice.com/">Silver Chalice</a>. All Rights Reserved. | Design by <a href="http://www.freecsstemplates.org/">FCT</a>.</p>
+        </div>
+
+
+</div>
+<!-- end page -->
+</div>
+</body>
+</html>
