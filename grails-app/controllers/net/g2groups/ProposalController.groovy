@@ -13,6 +13,7 @@ class ProposalController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def mailService
+    def springSecurityService
 
     def index = {
         redirect(action: "list", params: params)
@@ -38,8 +39,11 @@ class ProposalController {
 		        proposedGroup.properties = params
 
 		        def user = User.findByEmail(params.email)
-		        if (!user)
+		        if (!user){
 		            user = new User(params)
+		            user.password = springSecurityService.encodePassword("${user.name}-g2g")
+		            user.username = params.email
+		        }
 		        proposedGroup.proposer = user
 
 		        if(!params.answer || params.answer != "4"){
