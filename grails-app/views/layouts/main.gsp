@@ -15,15 +15,108 @@ Description: A wide two-column design suitable for blogs and small websites.
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>g2groups.net</title>
-	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=true_or_false&amp;key=ABQIAAAAXeAx6Va9xJMTHMkJ3KHQXBSJGSVjnGeLiZeTQg2BDNUcF0RZChSmXz2E5iewntNI2BPdrZTRDUeT7Q" type="text/javascript"></script>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAXeAx6Va9xJMTHMkJ3KHQXBSJGSVjnGeLiZeTQg2BDNUcF0RZChSmXz2E5iewntNI2BPdrZTRDUeT7Q" type="text/javascript"></script>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
 	<link rel="shortcut icon" href="${createLinkTo(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
 	<g:layoutHead />
-	<g:javascript library="application" />
+	<g:javascript library="jquery" plugin="jquery"/>
+	<jqui:resources/>
+
+	<link rel="stylesheet" type="text/css" href="${resource(dir:'jquery-ui/themes/smoothness', file:'jquery-ui-1.8.7.custom.css')}">
+
+
+	<script type="text/javascript">
+
+		$(document).ready(function() {
+
+			$("#x").button();
+
+			$("#mapWrapper").dialog({
+				autoOpen: false,
+				modal: true,
+				width: 605,
+				height:440,
+				resizable: false,
+				title: 'G2Groups around the World'
+			});
+
+			$("#mapThumb").click(function() {
+				$("#mapWrapper").dialog("open");
+				initialize_map();
+			});
+
+		});
+
+
+
+
+		function initialize_map()	{
+//			var map = new YMap(document.getElementById('ymap'));
+//			map.addTypeControl();
+//			map.addZoomLong();
+//			map.addPanControl();
+//			map.setMapType(YAHOO_MAP_REG);
+
+//			var hq = new YGeoPoint(1, 1);
+// 			map.drawZoomAndCenter(hq, 17);
+
+			var map = new GMap2(document.getElementById("map"));
+			map.setCenter(new GLatLng(39.754286, -104.994637), 1);
+			map.addControl(new GLargeMapControl());
+			map.addControl(new GMapTypeControl());
+			map.setMapType(G_NORMAL_MAP);
+
+			<% def groups%>
+
+			<g:if test="${groupInstanceList}">
+				<% groups = groupInstanceList %>
+			</g:if>
+			<g:else>
+				<% groups = proposalInstanceList %>
+			</g:else>
+
+			<g:each var="group" in="${groups}">
+
+				<g:if test="${group.latitude && group.longitude}">
+
+					var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}))
+					map.addOverlay(m${group.id});
+
+				   GEvent.addListener(m${group.id}, "click", function() {
+					  m${group.id}.openInfoWindowHtml("<a href='${group.website}'>${group.name}</a>");
+					});
+
+				</g:if>
+
+			</g:each>
+
+		}
+
+	</script>
+
+	<style type="text/css">
+		div#map {
+			width: 572px;
+			height: 400px;
+		}
+
+		#x {
+			padding: 1px 1px 3px;
+			margin-left:5px;
+			color:#299d5d;
+		}
+
+
+
+		.ui-widget-header {
+			color:#299d5d;
+		}
+	</style>
+
 </head>
-<body onload="${pageProperty(name:'body.onload')}">
+<body>
 <!-- start header -->
 <div id="header">
 <div id="logo">
@@ -44,7 +137,10 @@ Description: A wide two-column design suitable for blogs and small websites.
 	
 	<!-- start content -->
 	<div id="content">
-		
+		<div id="mapWrapper">
+			<div id="map"></div>
+		</div>
+
 		<g:layoutBody />
 		
 	</div>
@@ -56,7 +152,7 @@ Description: A wide two-column design suitable for blogs and small websites.
                         <img class="headerImage" src="${createLinkTo(dir:'images',file:'search.png')}" />
                         <g:form controller='group' action="search">
                             <fieldset>
-                                    <input type="text" id="query" name="query" value="" /><input type="submit" id="x" value="Search" /><br/>
+                                    <input type="text" id="query" name="query" value="" /><input type="submit" id="x" value="search" /><br/>
                                     <g:if test="${session?.searchClass == 'Groups'}">
                                         <g:radio name='searchClass' value='Groups' checked='true' /><strong>Active</strong> Groups <br/>
                                         <g:radio name="searchClass" value="Proposals" /><strong>Proposed</strong> Groups
@@ -80,12 +176,17 @@ Description: A wide two-column design suitable for blogs and small websites.
                         <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
                     </li>
                     <li>
-	                    <h3>is your group listed here?</h3>
+	                    <h3> is your group listed here?</h3>
                         <p>
                           If your group is listed as <g:link controller="proposal" action="list">proposed</g:link> but is currently <strong>active</strong>, <g:link controller="group" action="p">give us the group information</g:link> so we can do something about it.
                         </p>
                         <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
                     </li>
+					<li>
+						<a id="mapThumb" href="javascript:openMap()"><img style="margin-left:20px" src="${resource(dir:'images', file:'map-thumb.png')}" />  </a>
+						<img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
+					</li>
+
                     <li>
                         <a style="margin-left:50px" href="http://twitter.com/g2groups"><img class="headerImage" src="${createLinkTo(dir:'images',file:'GreenTwitterBird.png')}" /></a>
                         <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />

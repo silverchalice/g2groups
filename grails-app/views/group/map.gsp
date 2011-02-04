@@ -18,38 +18,40 @@
 
 		<script type="text/javascript">
 
-		function initialize_map()	{
-//			var map = new YMap(document.getElementById('ymap'));
-//			map.addTypeControl();
-//			map.addZoomLong();
-//			map.addPanControl();
-//			map.setMapType(YAHOO_MAP_REG);
+			$(mapContainer).dialog({ autoOpen: false })
 
-//			var hq = new YGeoPoint(1, 1);
-// 			map.drawZoomAndCenter(hq, 17);
+			function initialize_map()	{
+	//			var map = new YMap(document.getElementById('ymap'));
+	//			map.addTypeControl();
+	//			map.addZoomLong();
+	//			map.addPanControl();
+	//			map.setMapType(YAHOO_MAP_REG);
 
-			var map = new GMap2(document.getElementById("map"));
-			map.setCenter(new GLatLng(39.754286, -104.994637), 1);
-			map.addControl(new GLargeMapControl());
-			map.addControl(new GMapTypeControl());
-			map.setMapType(G_NORMAL_MAP);
+	//			var hq = new YGeoPoint(1, 1);
+	// 			map.drawZoomAndCenter(hq, 17);
 
-			<g:each var="group" in="${groups}">
+				var map = new GMap2(document.getElementById("map"));
+				map.setCenter(new GLatLng(39.754286, -104.994637), 1);
+				map.addControl(new GLargeMapControl());
+				map.addControl(new GMapTypeControl());
+				map.setMapType(G_NORMAL_MAP);
 
-			    <g:if test="${group.latitude && group.longitude}">
+				<g:each var="group" in="${groups}">
 
-			        var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}))
-					map.addOverlay(m${group.id});
+					<g:if test="${group.latitude && group.longitude}">
 
-			       GEvent.addListener(m${group.id}, "click", function() {
-					  m${group.id}.openInfoWindowHtml("<a href='${group.website}'>${group.name}</a>");
-					});
+						var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}))
+						map.addOverlay(m${group.id});
 
-			    </g:if>
+					   GEvent.addListener(m${group.id}, "click", function() {
+						  m${group.id}.openInfoWindowHtml("<a href='${group.website}'>${group.name}</a>");
+						});
 
-			</g:each>
+					</g:if>
 
-		}
+				</g:each>
+
+			}
 
 		</script>
 

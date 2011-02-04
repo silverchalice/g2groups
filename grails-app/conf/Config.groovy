@@ -121,3 +121,17 @@ grails.plugins.springsecurity.interceptUrlMap = [
    '/**':                                                  ['ROLE_ADMIN']
 ]
 
+grails.spring.bean.packages = ["twitterChecker"]
+twitterChecker {
+	checkFollowersEvery = 0
+	checkMentionsEvery = 0
+	checkRetweetsEvery = 0
+	checkTimelineEvery = 0
+    oauth.consumerKey = "yV9Cs2cCvrIfOurpJt1w"
+    oauth.consumerSecret = "JOecD8vY0VVc7u3rr6ZIX7utSlXOaCZyRO8PrjY16I"
+    storageFolder = "/tw/"
+	    // Don't remove your own config oauth.consumerKey and other stuff...
+	    accountId = "239490679"
+	    token = "239490679-QkZb3MD0V4TaigrYNH6Ptwf4uF1fpqv9Tgte4QqU"
+	    tokenSecret = "wEGcfZYOHBnxD6IpJ9ky8hR2oypaGybiqOeI4KXoe7s"
+	}

@@ -1,8 +1,5 @@
 dataSource {
 	 pooled = true
-	 driverClassName = "org.hsqldb.jdbcDriver"
-	 username = "sa"
-	 password = ""
 }
 
 hibernate {
@@ -14,8 +11,12 @@ hibernate {
 environments {
 	development {
 		dataSource {
-			dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-			url = "jdbc:hsqldb:mem:devDB"
+         	driverClassName = "com.mysql.jdbc.Driver"
+         	username = "g2g"
+         	password = "nevergivein89"
+
+			dbCreate = "update"
+			url = "jdbc:mysql://localhost:3306/g2g"
 		}
 	}
 	test {
@@ -27,9 +28,9 @@ environments {
 	production {
 		dataSource {
 			pooled = false
-         		driverClassName = "com.mysql.jdbc.Driver"
-         		username = "g2g"
-         		password = "nevergivein89"
+         	driverClassName = "com.mysql.jdbc.Driver"
+         	username = "g2g"
+         	password = "nevergivein89"
 
 			dbCreate = "update"
 			url = "jdbc:mysql://localhost:3306/g2g"

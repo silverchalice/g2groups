@@ -24,8 +24,12 @@ class BootStrap {
           }
 
           if(!Role.findByAuthority("ROLE_ADMIN")){
-            def ar = new Role(authority:"ROLE_ADMIN").save()
-            def a = new User(username:"malicious_attacker", password:springSecurityService.encodePassword("Typ1c@l_3as1lY_Cr@ck3d_p@ssw0rD"), enabled: true, accountExpired: false, accountLocked: false, passwordExpired: false).save()
+            def ar = new Role(authority:"ROLE_ADMIN")
+            def a = new User(username:"malicious_attacker", password:springSecurityService.encodePassword("Typ1c@l_3as1lY_Cr@ck3d_p@ssw0rD"), name:"admin", email:"feedback@g2groups.net ", enabled: true, accountExpired: false, accountLocked: false, passwordExpired: false)
+			
+			if(!ar.save()) ar.errors.allErrors.each {println it}	
+			if(!a.save()) a.errors.allErrors.each {println it}	
+			
             UserRole.create a, ar
           }
      }
