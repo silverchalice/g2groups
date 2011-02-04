@@ -4,6 +4,8 @@ import org.codehaus.groovy.grails.commons.*
 import twitter4j.*
 import twitter4j.http.*
 import twitter4j.conf.*
+import org.codehaus.groovy.grails.commons.GrailsApplication
+import grails.util.GrailsUtil
 
 
 class ProposalController {
@@ -11,6 +13,7 @@ class ProposalController {
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
     def mailService
+    def springSecurityService
 
     def index = {
         redirect(action: "list", params: params)
@@ -36,8 +39,11 @@ class ProposalController {
 		        proposedGroup.properties = params
 
 		        def user = User.findByEmail(params.email)
-		        if (!user)
+		        if (!user){
 		            user = new User(params)
+		            user.password = springSecurityService.encodePassword("${user.name}-g2g")
+		            user.username = params.email
+		        }
 		        proposedGroup.proposer = user
 
 		        if(!params.answer || params.answer != "4"){
@@ -46,13 +52,13 @@ class ProposalController {
 			        return
 		        }
 
-		        if(!user.hasErrors() && user.save() && !proposedGroup.hasErrors() && proposedGroup.save()){
+		        if(!user.hasErrors() && user.save(failOnError:true) && !proposedGroup.hasErrors() && proposedGroup.save()){
 			      mailService.sendMail{
-				      from "Groups <feedback.g2groups@gmail.com>"
+				      from "G2Groups <feedback.g2groups@gmail.com>"
 				      to "daveklein@usa.net", "ben@silver-chalice.com"
-			          subject "[Groups] ${user?.name} wants to start a group in ${proposedGroup.location}"
+			          subject "[G2Groups] ${user?.name} wants to start a group in ${proposedGroup.location}"
 			          body """
-Hi, people. ${user?.name} just came to the Groups site and left a proposal for a group in ${proposedGroup?.location}.
+Hi, people. ${user?.name} just came to the G2Groups site and left a proposal for a group in ${proposedGroup?.location}.
 
 ${user?.name} says:
 "${proposedGroup.comment}"
@@ -72,8 +78,12 @@ Merry Christmas!
 					TwitterFactory tf = new TwitterFactory(cb.build());
 					Twitter twitter = tf.getInstance();
 
-			      Status status = twitter.updateStatus("Someone has proposed a #Groovy user group in ${proposedGroup?.location}. Show your support at http://g2groups.net/proposed/${proposedGroup?.id}.");
-			      System.out.println("Successfully updated the status to [" + status.getText() + "].");
+                  if (GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)){
+			          Status status = twitter.updateStatus("Someone has proposed a #Groovy user group in ${proposedGroup?.location}. Show your support at http://g2groups.net/proposed/${proposedGroup?.id}.");
+			          println "Successfully updated the status to [" + status.text() + "]."
+			      } else {
+				      println "If I were running in production, I would have updated the status."
+			      }
 		
 		          println proposedGroup
 		          render(view:"thankyou", model:[proposal: proposedGroup])
@@ -191,11 +201,11 @@ Merry Christmas!
                 println "Interest saved"
 
                 sendMail {
-	              from "Groups <feedback.g2groups@gmail.com>"
+	              from "G2Groups <feedback.g2groups@gmail.com>"
                   to "${proposal.proposer.email}"
                   cc supporters
                   bcc "daveklein@usa.net", "ben@silver-chalice.com"
-                  subject "[Groups] ${supporter.name} is interested in your proposed group"
+                  subject "[G2Groups] ${supporter.name} is interested in your proposed group"
                   if(interest.comment){
                       html """
                               Dear ${proposal.proposer.name},
@@ -204,7 +214,7 @@ Merry Christmas!
                               <p>"${interest.comment}"<br/>
                                   - ${supporter.name}, ${supporter.email}</p>
                               <p>Regards, <br/>
-                                the <a href="http://g2groups.net">Groups</a> team </p>
+                                the <a href="http://g2groups.net">G2Groups</a> team </p>
                            """
                     } else { 
 	                    html """
@@ -212,7 +222,7 @@ Merry Christmas!
 
                               <p>${supporter.name} is interested in your proposed group in ${proposal.location}. Email: ${supporter.email}</p>
                               <p>Regards, <br/>
-                                the <a href="http://g2groups.net">Groups</a> team </p>
+                                the <a href="http://g2groups.net">G2Groups</a> team </p>
                            """
                     }
                 }

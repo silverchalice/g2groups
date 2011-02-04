@@ -22,6 +22,8 @@ class User {
 		password column: '`password`'
 	}
 
+    String toString(){ name }
+
 	Set<Role> getAuthorities() {
 		UserRole.findAllByUser(this).collect { it.role } as Set
 	}
