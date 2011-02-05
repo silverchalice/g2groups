@@ -186,6 +186,8 @@ Merry Christmas!
 	    def supporter = User.findByEmail(params.email)
 	    if (!supporter)
 	        supporter= new User(params)
+	        supporter.password = springSecurityService.encodePassword("${supporter.name}-g2g")
+            supporter.username = params.email
 	   
             interest.supporter = supporter
             interest.proposal = proposal
