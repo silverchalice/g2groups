@@ -10,7 +10,7 @@
             <h2>Register Interest for a Group in ${proposal.location}</h2>
             <g:if test="${flash.message}">
             <br />
-            <div class="message">${flash.message}</div>
+            <div class="message"><p style="font-size:large; color:red;"><b>${flash.message}</b></p></div>
             <br />
             </g:if>
             <g:hasErrors bean="${interest}">
