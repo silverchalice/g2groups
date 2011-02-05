@@ -53,36 +53,36 @@ class ProposalController {
 		        }
 
 		        if(!user.hasErrors() && user.save(failOnError:true) && !proposedGroup.hasErrors() && proposedGroup.save()){
-			      mailService.sendMail{
-				      from "G2Groups <feedback.g2groups@gmail.com>"
-				      to "daveklein@usa.net", "ben@silver-chalice.com"
-			          subject "[G2Groups] ${user?.name} wants to start a group in ${proposedGroup.location}"
-			          body """
+                  if (GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)){
+			          mailService.sendMail{
+				          from "G2Groups <feedback.g2groups@gmail.com>"
+				          to "daveklein@usa.net", "ben@silver-chalice.com"
+			              subject "[G2Groups] ${user?.name} wants to start a group in ${proposedGroup.location}"
+			              body """
 Hi, people. ${user?.name} just came to the G2Groups site and left a proposal for a group in ${proposedGroup?.location}.
 
 ${user?.name} says:
 "${proposedGroup.comment}"
 
 Merry Christmas!
-			          """
-			      }
+			              """
+			          }
 
-		          def configured = ConfigurationHolder.config.twitterChecker.oauth.consumerKey && ConfigurationHolder.config.twitterChecker.oauth.consumerSecret
+		              def configured = ConfigurationHolder.config.twitterChecker.oauth.consumerKey && ConfigurationHolder.config.twitterChecker.oauth.consumerSecret
 
-					ConfigurationBuilder cb = new ConfigurationBuilder();
-					cb.setDebugEnabled(true)
-					  .setOAuthConsumerKey(ConfigurationHolder.config.twitterChecker.oauth.consumerKey)
-					  .setOAuthConsumerSecret(ConfigurationHolder.config.twitterChecker.oauth.consumerSecret)
-					  .setOAuthAccessToken(ConfigurationHolder.config.twitterChecker.token)
-					  .setOAuthAccessTokenSecret(ConfigurationHolder.config.twitterChecker.tokenSecret);
-					TwitterFactory tf = new TwitterFactory(cb.build());
-					Twitter twitter = tf.getInstance();
+					    ConfigurationBuilder cb = new ConfigurationBuilder()
+					    cb.setDebugEnabled(true)
+					      .setOAuthConsumerKey(ConfigurationHolder.config.twitterChecker.oauth.consumerKey)
+					      .setOAuthConsumerSecret(ConfigurationHolder.config.twitterChecker.oauth.consumerSecret)
+					      .setOAuthAccessToken(ConfigurationHolder.config.twitterChecker.token)
+					      .setOAuthAccessTokenSecret(ConfigurationHolder.config.twitterChecker.tokenSecret)
+					    TwitterFactory tf = new TwitterFactory(cb.build())
+					    Twitter twitter = tf.getInstance()
 
-                  if (GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)){
-			          Status status = twitter.updateStatus("Someone has proposed a #Groovy user group in ${proposedGroup?.location}. Show your support at http://g2groups.net/proposed/${proposedGroup?.id}.");
+			          Status status = twitter.updateStatus("Someone has proposed a #Groovy user group in ${proposedGroup?.location}. Show your support at http://g2groups.net/proposed/${proposedGroup?.id}.")
 			          println "Successfully updated the status to [" + status.text() + "]."
 			      } else {
-				      println "If I were running in production, I would have updated the status."
+				      println "If I were running in production, I would have emailed a bunch of people and then updated the status."
 			      }
 		
 		          println proposedGroup
@@ -199,27 +199,28 @@ Merry Christmas!
 		        return
 	        }
 
-	    if(!supporter.hasErrors() && supporter.save() && !interest.hasErrors() && interest.save()){
+	    if(!supporter.hasErrors() && supporter.save(failOnError:true) && !interest.hasErrors() && interest.save(failOnError:true)){
                 println "Interest saved"
 
-                sendMail {
-	              from "G2Groups <feedback.g2groups@gmail.com>"
-                  to "${proposal.proposer.email}"
-                  cc supporters
-                  bcc "daveklein@usa.net", "ben@silver-chalice.com"
-                  subject "[G2Groups] ${supporter.name} is interested in your proposed group"
-                  if(interest.comment){
-                      html """
-                              Dear ${proposal.proposer.name},
+                if (GrailsUtil.getEnvironment().equals(GrailsApplication.ENV_PRODUCTION)){
+                    sendMail {
+	                  from "G2Groups <feedback.g2groups@gmail.com>"
+                      to "${proposal.proposer.email}"
+                      cc supporters
+                      bcc "daveklein@usa.net", "ben@silver-chalice.com"
+                      subject "[G2Groups] ${supporter.name} is interested in your proposed group"
+                      if(interest.comment){
+                          html """
+Dear ${proposal.proposer.name},
     
-                              <p>${supporter.name} has commented on your proposed group in ${proposal.location}.</p>
-                              <p>"${interest.comment}"<br/>
-                                  - ${supporter.name}, ${supporter.email}</p>
-                              <p>Regards, <br/>
-                                the <a href="http://g2groups.net">G2Groups</a> team </p>
+<p>${supporter.name} has commented on your proposed group in ${proposal.location}.</p>
+<p>"${interest.comment}"<br/>
+ - ${supporter.name}, ${supporter.email}</p>
+<p>Regards, <br/>
+ the <a href="http://g2groups.net">G2Groups</a> team </p>
                            """
-                    } else { 
-	                    html """
+                       } else { 
+	                   html """
                               Dear ${proposal.proposer.name},
 
                               <p>${supporter.name} is interested in your proposed group in ${proposal.location}. Email: ${supporter.email}</p>
@@ -228,6 +229,9 @@ Merry Christmas!
                            """
                     }
                 }
+			} else {
+                println "If the environment had been PRODUCTION, I would have emailed a bunch of people about this supporter, but I won't, because I am an environmentally conscious Grails app."
+            }
 
 	        redirect(action:show, id :proposal.id)
 	    }
