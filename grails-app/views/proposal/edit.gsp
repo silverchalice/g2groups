@@ -43,7 +43,23 @@
                                     <g:textArea name="comment" cols="40" rows="5" value="${proposalInstance?.comment}" />
                                 </td>
                             </tr>
-                        
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="latitude">Latitude:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:proposalInstance,field:'latitude','errors')}">
+                                     <input type="text" id="latitude" name="latitude" value="${fieldValue(bean:proposalInstance,field:'latitude')}"/>
+                                </td>
+                            </tr>
+
+							<tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="longitude">Longitude:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:proposalInstance,field:'longitude','errors')}">
+                                     <input type="text" id="longitude" name="longitude" value="${fieldValue(bean:proposalInstance,field:'longitude')}"/>
+                                </td>
+                            </tr>
                         </tbody>
                     </table><br />
                 </div>

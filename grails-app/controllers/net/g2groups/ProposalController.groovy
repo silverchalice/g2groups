@@ -6,6 +6,7 @@ import twitter4j.http.*
 import twitter4j.conf.*
 import org.codehaus.groovy.grails.commons.GrailsApplication
 import grails.util.GrailsUtil
+import net.g2groups.User
 
 
 class ProposalController {
@@ -18,6 +19,11 @@ class ProposalController {
     def index = {
         redirect(action: "list", params: params)
     }
+
+
+	def admin_list = {
+		[ proposalInstanceList: Proposal.list() ]
+	}
 
     def list = {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
@@ -185,7 +191,7 @@ Merry Christmas!
             }
 	    def supporter = User.findByEmail(params.email)
 	    if (!supporter)
-	        supporter= new User(params)
+	        supporter = new User(params)
 	        supporter.password = springSecurityService.encodePassword("${supporter.name}-g2g")
             supporter.username = params.email
 	   

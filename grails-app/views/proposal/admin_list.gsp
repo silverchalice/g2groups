@@ -3,7 +3,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
-        <g:set var="entityName" value="${message(code: 'book.label', default: 'Group')}" />
+        <g:set var="entityName" value="${message(code: 'proposal.label', default: 'Proposal')}" />
         <title><g:message code="default.list.label" args="[entityName]" /></title>
     </head>
     <body>
@@ -21,23 +21,19 @@
                     <thead>
                         <tr>
 
-                            <g:sortableColumn property="name" title="${message(code: 'group.title.label', default: 'Name')}" />
+                            <th><g:message code="proposal.location.label" default="Location" /></th>
 
-                            <th><g:message code="group.location.label" default="Location" /></th>
-
-                            <g:sortableColumn property="description" title="${message(code: 'group.description.label', default: 'Description')}" />
+                            <g:sortableColumn property="proposer" title="${message(code: 'proposal.proposer.label', default: 'Proposer')}" />
 
                         </tr>
                     </thead>
                     <tbody>
-                    <g:each in="${groupInstanceList}" status="i" var="groupInstance">
+                    <g:each in="${proposalInstanceList}" status="i" var="proposalInstance">
                         <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
 
-                            <td><g:link action="edit" id="${groupInstance.id}">${fieldValue(bean: groupInstance, field: "name")}</g:link></td>
+                            <td><g:link action="edit" id="${proposalInstance.id}">${fieldValue(bean: proposalInstance, field: "location")}</g:link></td>
 
-                            <td>${fieldValue(bean: groupInstance, field: "location")}</td>
-
-                            <td>${fieldValue(bean: groupInstance, field: "description")}</td>
+                            <td>${fieldValue(bean: proposalInstance, field: "proposer")}</td>
 
 
                         </tr>
