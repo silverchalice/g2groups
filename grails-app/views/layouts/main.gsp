@@ -15,7 +15,7 @@ Description: A wide two-column design suitable for blogs and small websites.
 <head>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>g2groups.net</title>
-	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAXeAx6Va9xJMTHMkJ3KHQXBSJGSVjnGeLiZeTQg2BDNUcF0RZChSmXz2E5iewntNI2BPdrZTRDUeT7Q" type="text/javascript"></script>
+	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAUBuwYLt8MoHV8G-JyWegDxSJGSVjnGeLiZeTQg2BDNUcF0RZChTYQCUB_Yogm-ABhaNK6_c9361Pdg" type="text/javascript"></script>
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
