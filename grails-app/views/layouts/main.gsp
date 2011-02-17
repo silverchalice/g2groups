@@ -16,6 +16,7 @@ Description: A wide two-column design suitable for blogs and small websites.
 	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 	<title>g2groups.net</title>
 	<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAUBuwYLt8MoHV8G-JyWegDxSJGSVjnGeLiZeTQg2BDNUcF0RZChTYQCUB_Yogm-ABhaNK6_c9361Pdg" type="text/javascript"></script>
+
 	<meta name="keywords" content="" />
 	<meta name="description" content="" />
 	<link rel="stylesheet" href="${createLinkTo(dir:'css',file:'main.css')}" />
@@ -78,14 +79,19 @@ Description: A wide two-column design suitable for blogs and small websites.
 			</g:else>
 
 			<g:each var="group" in="${groups}">
-
+				<g:if test="${groupInstanceList}">
+					var info = "<a href='${group.website}'>${group.name}</a>"
+				</g:if>
+				<g:else>
+					var info = "${group.proposer}"
+				</g:else>
 				<g:if test="${group.latitude && group.longitude}">
 
 					var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}))
 					map.addOverlay(m${group.id});
 
 				   GEvent.addListener(m${group.id}, "click", function() {
-					  m${group.id}.openInfoWindowHtml("<a href='${group.website}'>${group.name}</a>");
+					  m${group.id}.openInfoWindowHtml(info);
 					});
 
 				</g:if>

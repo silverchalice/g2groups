@@ -25,6 +25,7 @@ class UtilController {
 			} else {
 				sql.execute("update proposal set proposer_id = ${user.id} where proposer_id = ${founder.id}")
 				sql.execute("update g2group set user_id = ${user.id} where founder_id = ${founder.id}")
+				sql.execute("update interest set supporter_id = ${user.id} where supporter_id = ${founder.id}")
 			}
 
 

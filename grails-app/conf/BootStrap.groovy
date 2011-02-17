@@ -23,9 +23,10 @@ class BootStrap {
             def pg2 = new Proposal(location:'Banglore, India', comment:'I think we need a groovy user group in Banglore', proposer:pf1).save()
           }
 
-          if(!Role.findByAuthority("ROLE_ADMIN")){
-            def ar = new Role(authority:"ROLE_ADMIN")
-            def a = new User(username:"malicious_attacker", password:springSecurityService.encodePassword("Typ1c@l_3as1lY_Cr@ck3d_p@ssw0rD"), name:"admin", email:"feedback@g2groups.net ", enabled: true, accountExpired: false, accountLocked: false, passwordExpired: false)
+          if(!User.findByUsername("admin")){
+			  println "creating admin"
+            def ar = Role.findByAuthority("ROLE_ADMIN")
+            def a = new User(username:"admin", password:springSecurityService.encodePassword("password"), name:"administrator", email:"zak@silver-chalice.com", enabled: true, accountExpired: false, accountLocked: false, passwordExpired: false)
 			
 			if(!ar.save()) ar.errors.allErrors.each {println it}	
 			if(!a.save()) a.errors.allErrors.each {println it}	

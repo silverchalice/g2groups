@@ -13,8 +13,7 @@ class GroupController {
     def list = {
 	    println("Beginning list action")
 	    def d = new Date()
-	    println "$d [main] ERROR StackTrace  - Sanitizing stacktrace: org.muppets.actors.dickens.GonzoTheGreatCreationException: Error creating bean with name 'Gonzo The Great': Cannot resolve reference to giant blank space between the header and the page content"
-		println "    at org.muppets.actors.dickens.GonzoTheGreat.GiantBlankSpace: Something's wrong in main.gsp"
+
         session.searchClass = 'Groups' 
         [ groupInstanceList: Group.findAllByActive(true) ]
     }
