@@ -173,12 +173,12 @@ class GroupController {
 		        println "here are the results ${searchResult}"
 		        proposalList = searchResult.results
                         println "About to render the results..."
-                        render(view:'proposedGroupList', model:[proposedGroups:proposalList])
+                        render(view:'/proposal/list', model:[proposalInstanceList:proposalList, proposalInstanceTotal:proposalList.count()])
 		    }
 
 		    else {
                         proposalList = Proposal.list()
-                        render(view:'proposedGroupList', model:[proposedGroups:proposalList])
+                        render(view:'/proposal/list', model:[proposalInstanceList:proposalList, proposalInstanceTotal: proposalList.count()])
                     }
         }
 
