@@ -54,15 +54,6 @@ Description: A wide two-column design suitable for blogs and small websites.
 
 
 		function initialize_map()	{
-//			var map = new YMap(document.getElementById('ymap'));
-//			map.addTypeControl();
-//			map.addZoomLong();
-//			map.addPanControl();
-//			map.setMapType(YAHOO_MAP_REG);
-
-//			var hq = new YGeoPoint(1, 1);
-// 			map.drawZoomAndCenter(hq, 17);
-
 			var map = new GMap2(document.getElementById("map"));
 			map.setCenter(new GLatLng(39.754286, -104.994637), 1);
 			map.addControl(new GLargeMapControl());
@@ -78,16 +69,24 @@ Description: A wide two-column design suitable for blogs and small websites.
 				<% groups = proposalInstanceList %>
 			</g:else>
 
+			var info
+
 			<g:each var="group" in="${groups}">
+
 				<g:if test="${groupInstanceList}">
-					var info = "<a href='${group.website}'>${group.name}</a>"
+
+					info = "<a href='${group.website}'>${group.name}</a>";
 				</g:if>
 				<g:else>
-					var info = "${group.proposer}"
+
+					info = "${group.proposer}";
 				</g:else>
+
+
+
 				<g:if test="${group.latitude && group.longitude}">
 
-					var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}))
+					var m${group.id} = new GMarker(new GLatLng(${group.latitude},${group.longitude}));
 					map.addOverlay(m${group.id});
 
 				   GEvent.addListener(m${group.id}, "click", function() {
@@ -189,7 +188,7 @@ Description: A wide two-column design suitable for blogs and small websites.
                         <img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
                     </li>
 					<li>
-						<a id="mapThumb" href="javascript:openMap()"><img style="margin-left:20px" src="${resource(dir:'images', file:'map-thumb.png')}" />  </a>
+						<a id="mapThumb" href="#"><img style="margin-left:20px" src="${resource(dir:'images', file:'map-thumb.png')}" />  </a>
 						<img class="divider" src="${createLinkTo(dir:'images',file:'sidebar.png')}" />
 					</li>
 
